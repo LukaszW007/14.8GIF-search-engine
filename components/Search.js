@@ -1,11 +1,23 @@
 Search = React.createClass({
     getInitialState() {
-      return{
-          searchingText:''
-      };
+        return {
+            searchingText: ''
+        };
     },
-    handleChange: function (e) {
+    handleChange(e) {
+        var searchingText = e.target.value;
+        this.setState({
+            searchingText: searchingText
+        });
 
+        if (searchingText.length > 2) {
+            this.props.onSearch(searchingText);
+        }
+    },
+    handleKeyUp: function (event) {
+        if (event.keyCode === 13) {
+            this.props.onSearch(this.state.searchingText);
+        }
     },
     render: function () {
         var styles = {
@@ -13,13 +25,16 @@ Search = React.createClass({
             width: '90%',
             maxWidth: '350px'
         };
-        return <input
-            type = "text"
-            onChange = {this.handleChange}
-            placeholder = "name of your gif"
-            style = {styles}
-            value = {this.state.searchTerm}
-        />
 
+        return (
+            <input
+                type="text"
+                onChange={this.handleChange}
+                onKeyUp={this.handleKeyUp}
+                placeholder="name of your gif"
+                style={styles}
+                value={this.state.searchTerm}
+            />
+        )
     }
 });
